@@ -2,15 +2,14 @@ package org.example.productcatalogservice_oct2026evening.controllers;
 
 import org.example.productcatalogservice_oct2026evening.dtos.CategoryDto;
 import org.example.productcatalogservice_oct2026evening.dtos.ProductDto;
+import org.example.productcatalogservice_oct2026evening.models.Category;
 import org.example.productcatalogservice_oct2026evening.models.Product;
 import org.example.productcatalogservice_oct2026evening.services.IProductService;
 import org.example.productcatalogservice_oct2026evening.services.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -48,6 +47,30 @@ public class ProductController {
 
         ProductDto productDto = from(product);
         return new ResponseEntity<>(productDto, HttpStatus.OK);
+    }
+
+    @PutMapping("/products/{id}")
+    public ProductDto replaceProduct(@PathVariable Long id, @RequestBody ProductDto productDto) {
+       Product inputProduct =  from(productDto);
+       Product outputProduct = productService.replaceProduct(id,inputProduct);
+       if (outputProduct == null) return null;
+       return from(outputProduct);
+    }
+
+    private Product from(ProductDto productDto) {
+        Product product = new Product();
+        product.setId(productDto.getId());
+        product.setName(productDto.getName());
+        product.setPrice(productDto.getPrice());
+        product.setImageUrl(productDto.getImageUrl());
+        product.setDescription(productDto.getDescription());
+        if(productDto.getCategory() != null) {
+            Category category = new Category();
+            category.setName(productDto.getCategory().getName());
+            category.setId(productDto.getCategory().getId());
+            product.setCategory(category);
+        }
+        return product;
     }
 
     private ProductDto from(Product product) {
