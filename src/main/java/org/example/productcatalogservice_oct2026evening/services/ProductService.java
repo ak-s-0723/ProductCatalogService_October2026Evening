@@ -1,5 +1,6 @@
 package org.example.productcatalogservice_oct2026evening.services;
 
+import org.example.productcatalogservice_oct2026evening.clients.FakeStoreApiClient;
 import org.example.productcatalogservice_oct2026evening.dtos.FakeStoreProductDto;
 import org.example.productcatalogservice_oct2026evening.models.Category;
 import org.example.productcatalogservice_oct2026evening.models.Product;
@@ -24,21 +25,22 @@ public class ProductService implements IProductService {
     //private RestTemplate restTemplate;
     private RestTemplateBuilder restTemplateBuilder;
 
+
+    @Autowired
+    private FakeStoreApiClient fakeStoreApiClient;
+
     @Override
     public Product getProductDetailsById(Long id) {
-        RestTemplate restTemplate = restTemplateBuilder.build();
+//        RestTemplate restTemplate = restTemplateBuilder.build();
 //        FakeStoreProductDto fakeStoreProductDto = restTemplate.getForObject
 //                ("https://fakestoreapi.com/products/{id}", FakeStoreProductDto.class,id);
 
-        ResponseEntity<FakeStoreProductDto> fakeStoreProductDtoResponseEntity =
-                restTemplate.getForEntity("https://fakestoreapi.com/products/{id}",
-                        FakeStoreProductDto.class, id);
+//        ResponseEntity<FakeStoreProductDto> fakeStoreProductDtoResponseEntity =
+//                restTemplate.getForEntity("https://fakestoreapi.com/products/{id}",
+//                        FakeStoreProductDto.class, id);
 
-        if (fakeStoreProductDtoResponseEntity.hasBody() &&
-                fakeStoreProductDtoResponseEntity.getStatusCode()
-                        .equals(HttpStatusCode.valueOf(200))) {
-
-            FakeStoreProductDto fakeStoreProductDto = fakeStoreProductDtoResponseEntity.getBody();
+        FakeStoreProductDto fakeStoreProductDto = fakeStoreApiClient.getProductById(id);
+        if (fakeStoreProductDto !=null) {
             Product product = from(fakeStoreProductDto);
             return product;
         }

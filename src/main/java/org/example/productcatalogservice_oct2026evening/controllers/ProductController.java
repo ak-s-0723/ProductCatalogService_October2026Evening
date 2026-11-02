@@ -17,6 +17,7 @@ import java.util.List;
 //object with singleton scope -> bean
 //spring context
 @RestController
+@RequestMapping("/products")
 public class ProductController {
 
     @Autowired
@@ -24,7 +25,7 @@ public class ProductController {
 
 
 
-    @GetMapping("/products")
+    @GetMapping
     public List<ProductDto> getAllProducts() {
 //        Product product = new Product();
 //        product.setId(1L);
@@ -35,21 +36,23 @@ public class ProductController {
         return null;
     }
 
-    @GetMapping("/products/{id}")
+    @GetMapping("{id}")
     public ResponseEntity<ProductDto> getProductById(@PathVariable("id") Long productId) {
-//        Product product = new Product();
-//        product.setId(productId);
-//        return product;
+        if(productId <= 0L) {
+            throw new IllegalArgumentException("Please pass productId > 0");
+        }
+
         Product product = productService.getProductDetailsById(productId);
         if(product == null) {
-            return new ResponseEntity<>(null,HttpStatus.NOT_FOUND);
+            //return new ResponseEntity<>(null,HttpStatus.NOT_FOUND);
+            throw new RuntimeException("Product is not available");
         }
 
         ProductDto productDto = from(product);
         return new ResponseEntity<>(productDto, HttpStatus.OK);
     }
 
-    @PutMapping("/products/{id}")
+    @PutMapping("{id}")
     public ProductDto replaceProduct(@PathVariable Long id, @RequestBody ProductDto productDto) {
        Product inputProduct =  from(productDto);
        Product outputProduct = productService.replaceProduct(id,inputProduct);
