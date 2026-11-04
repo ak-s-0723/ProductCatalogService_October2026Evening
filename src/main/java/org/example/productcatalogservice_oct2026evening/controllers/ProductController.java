@@ -5,7 +5,6 @@ import org.example.productcatalogservice_oct2026evening.dtos.ProductDto;
 import org.example.productcatalogservice_oct2026evening.models.Category;
 import org.example.productcatalogservice_oct2026evening.models.Product;
 import org.example.productcatalogservice_oct2026evening.services.IProductService;
-import org.example.productcatalogservice_oct2026evening.services.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -22,8 +21,6 @@ public class ProductController {
 
     @Autowired
     private IProductService productService;
-
-
 
     @GetMapping
     public List<ProductDto> getAllProducts() {
