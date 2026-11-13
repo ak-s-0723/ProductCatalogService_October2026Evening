@@ -17,4 +17,5 @@ public class Product extends BaseModel {
     private Category category;
     private Double commission; //sensitive
     private Boolean isPrimeSaleSpecific; //sensitive
+    private Integer quantity;
 }

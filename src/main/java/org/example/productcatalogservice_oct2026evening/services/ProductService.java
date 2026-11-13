@@ -73,6 +73,16 @@ public class ProductService implements IProductService {
         return null;
     }
 
+    @Override
+    public void deleteProductById(Long id) {
+
+    }
+
+    @Override
+    public Product addProduct(Product product) {
+        return null;
+    }
+
     public <T> ResponseEntity<T> requestForEntity(HttpMethod httpMethod, String url, @Nullable Object request, Class<T> responseType, Object... uriVariables) throws RestClientException {
         RestTemplate restTemplate = restTemplateBuilder.build();
         RequestCallback requestCallback = restTemplate.httpEntityCallback(request, responseType);
